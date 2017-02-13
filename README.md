@@ -57,6 +57,21 @@ new Vue({
 const Counter = {}
 ```
 
+### Mixed with `h`
+
+`this.$html` returns a vNode, it does the same thing that `h` function does, so you can use it with `h` function.
+
+```js
+new Vue({
+  el: '#app',
+  render(h) {
+    return h('div', null, [
+      this.$html`<span>foo</span>`
+    ])
+  }
+})
+```
+
 ## Contributing
 
 1. Fork it!
