@@ -3,8 +3,7 @@ import hyperx from 'hyperx'
 export default function (Vue) {
   Vue.prototype.$html = function (...args) {
     const createElement = hyperx((tag, attrs, children) => {
-      const keys = Object.keys(attrs)
-      for (const key of keys) {
+      for (const key in attrs) {
         if (key.substring(0, 2) === 'on') {
           attrs.on = attrs.on || {}
           const newKey = lowerCaseFirstLetter(key.substring(2))
