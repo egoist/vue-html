@@ -22,7 +22,8 @@
     "semicolon": false,
     "esnext": true,
     "envs": [
-      "jest"
+      "jest",
+      "browser"
     ]
   },
   "main": "dist/vue-html.common.js",

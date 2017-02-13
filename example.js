@@ -18,7 +18,7 @@ new Vue({
   },
   render() {
     return this.$html`
-      <button ref="foo" class="wow" nativeOnClick=${() => console.log('native')} onClick=${this.handleClick}>${this.count}</button>
+      <button id="wow" ref="foo" class="wow" nativeOnClick=${() => console.log('native')} onClick=${this.handleClick}>${this.count}</button>
     `
   }
 })

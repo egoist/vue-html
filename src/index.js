@@ -18,6 +18,9 @@ export default function (Vue) {
           attrs.domProps = attrs.domProps || {}
           const newKey = lowerCaseFirstLetter(key.substring(8))
           attrs.domProps[newKey] = attrs[key]
+        } else if (key === 'id') {
+          attrs.attrs = attrs.attrs || {}
+          attrs.attrs.id = attrs.id
         }
       }
       return this.$createElement(tag, attrs, children)
