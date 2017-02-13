@@ -10,7 +10,7 @@
 $ npm install --save vue-html
 ```
 
-CDN version: https://unpkd.com/vue-html/dist/
+CDN version: https://unpkg.com/vue-html/dist/
 
 ## Usage
 
