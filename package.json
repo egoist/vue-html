@@ -1,0 +1,57 @@
+{
+  "name": "vue-html",
+  "version": "0.0.0",
+  "description": "Use tagged template string in Vue.js",
+  "license": "MIT",
+  "repository": "egoist/vue-html",
+  "author": {
+    "name": "EGOIST",
+    "email": "0x142857@gmail.com",
+    "url": "github.com/egoist"
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "scripts": {
+    "test": "jest && xo test/*.js src/*.js",
+    "build": "bili --format umd --fomat cjs --compress"
+  },
+  "files": [
+    "dist"
+  ],
+  "xo": {
+    "space": 2,
+    "semicolon": false,
+    "esnext": true,
+    "envs": [
+      "jest"
+    ]
+  },
+  "main": "dist/vue-html.common.js",
+  "keywords": [
+    "vue",
+    "hyperx"
+  ],
+  "devDependencies": {
+    "babel-preset-es2015": "^6.22.0",
+    "bili": "^0.14.0",
+    "jest-cli": "^15.1.1",
+    "vue": "latest",
+    "xo": "^0.17.1"
+  },
+  "eslintConfig": {
+    "extends": "egoist/esnext"
+  },
+  "dependencies": {
+    "hyperx": "^2.0.5"
+  },
+  "babel": {
+    "env": {
+      "test": {
+        "presets": [
+          "es2015"
+        ]
+      }
+    }
+  }
+}
