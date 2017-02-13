@@ -6,10 +6,12 @@ import HTML from './src'
 
 Vue.use(HTML)
 
-new Vue({
-  el: '#app',
-  data: {
-    count: 0
+const Counter = {
+  props: ['start'],
+  data() {
+    return {
+      count: this.start
+    }
   },
   methods: {
     handleClick() {
@@ -18,7 +20,16 @@ new Vue({
   },
   render() {
     return this.$html`
-      <button id="wow" ref="foo" class="wow" nativeOnClick=${() => console.log('native')} onClick=${this.handleClick}>${this.count}</button>
+      <button id="foo" ref="foo" class="wow" nativeOnClick=${() => console.log('native')} onClick=${this.handleClick}>${this.count}</button>
+    `
+  }
+}
+
+new Vue({
+  el: '#app',
+  render(h) {
+    return this.$html`
+      ${h(Counter, {props: {start: 0}})}
     `
   }
 })

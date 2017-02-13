@@ -40,6 +40,23 @@ new Vue({
 
 The syntax is exactly the same as Vue JSX despiting that we're using [tagged template string](https://github.com/substack/hyperx) here.
 
+### Component
+
+You still have to use the original `h` function:
+
+```js
+new Vue({
+  el: '#app',
+  render(h) {
+    return this.$html`
+      ${h(Counter, {props: {start: 0}})}
+    `
+  }
+})
+
+const Counter = {}
+```
+
 ## Contributing
 
 1. Fork it!
