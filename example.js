@@ -1,5 +1,5 @@
 // @tip: run this example with:
-// $ vue build example.js
+// $ yarn example
 
 import Vue from 'vue'
 import HTML from './src'

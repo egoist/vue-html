@@ -14,7 +14,8 @@
   },
   "scripts": {
     "test": "jest && xo test/*.js src/*.js && npm run build",
-    "build": "bili --format umd --fomat cjs --compress"
+    "build": "bili --format umd --fomat cjs --compress",
+    "example": "vue build example.js"
   },
   "files": [
     "dist"
