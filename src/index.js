@@ -3,13 +3,14 @@ import hyperx from 'hyperx'
 export default function (Vue) {
   Vue.prototype.$html = function (...args) {
     const createElement = hyperx((tag, attrs, children) => {
-      const newAttrs = {
-        style: attrs.style,
-        class: attrs.className,
-        key: attrs.key,
-        ref: attrs.ref,
-        refInFor: attrs.refInFor,
-        slot: attrs.slot
+      const newAttrs = {}
+      const defaults = ['style', 'className', 'key', 'ref', 'refInFor', 'slot']
+      for (const key of defaults) {
+        if (key === 'className') {
+          newAttrs.class = attrs.className
+        } else {
+          newAttrs[key] = attrs[key]
+        }
       }
 
       for (const key in attrs) {
@@ -28,7 +29,7 @@ export default function (Vue) {
           newAttrs.domProps = newAttrs.domProps || {}
           const newKey = lowerCaseFirstLetter(key.substring(8))
           newAttrs.domProps[newKey] = attrs[key]
-        } else {
+        } else if (defaults.indexOf(key) === -1) {
           // all others attrs => {attrs: attr}
           newAttrs.attrs = newAttrs.attrs || {}
           newAttrs.attrs[key] = attrs[key]

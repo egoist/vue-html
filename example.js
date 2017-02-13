@@ -20,7 +20,7 @@ const Counter = {
   },
   render() {
     return this.$html`
-      <button id="foo" ref="foo" class="wow" nativeOnClick=${() => console.log('native')} onClick=${this.handleClick}>${this.count}</button>
+      <button style=${{backgroundColor: 'pink'}} id="foo" ref="foo" class="wow" nativeOnClick=${() => console.log('native')} onClick=${this.handleClick}>${this.count}</button>
     `
   }
 }
