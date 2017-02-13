@@ -1,6 +1,6 @@
 {
   "name": "vue-html",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Use tagged template string in Vue.js",
   "license": "MIT",
   "repository": "egoist/vue-html",
