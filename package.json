@@ -13,7 +13,7 @@
     "node": ">=4"
   },
   "scripts": {
-    "test": "jest && xo test/*.js src/*.js",
+    "test": "jest && xo test/*.js src/*.js && npm run build",
     "build": "bili --format umd --fomat cjs --compress"
   },
   "files": [
