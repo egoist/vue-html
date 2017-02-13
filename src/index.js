@@ -3,7 +3,6 @@ import hyperx from 'hyperx'
 export default function (Vue) {
   Vue.prototype.$html = function (...args) {
     const createElement = hyperx((tag, attrs, children) => {
-      attrs = Object.assign({}, attrs)
       const keys = Object.keys(attrs)
       for (const key of keys) {
         if (key.substring(0, 2) === 'on') {
