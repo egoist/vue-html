@@ -75,7 +75,7 @@ new Vue({
 })
 ```
 
-The usage is very similar to Vue JSX except for that the `html` function is powered by [HTM (Hyperscript Tagged Markup)](https://github.com/developit/htm).
+The usage is very similar to Vue JSX except that the `html` function is powered by [HTM (Hyperscript Tagged Markup)](https://github.com/developit/htm).
 
 ## Contributing
 
