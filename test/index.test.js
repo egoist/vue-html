@@ -1,40 +1,45 @@
+import assert from 'assert'
 import Vue from 'vue'
 import HTML from '../src'
 
 Vue.use(HTML)
 
-test('main', () => {
-  const vm = new Vue({
-    render() {
-      return this.$html`<div>hello</div>`
-    }
-  }).$mount()
-  expect(vm.$el.textContent).toBe('hello')
-})
-
-test('transform vue-specific attributes', () => {
-  const vm = new Vue({
-    data: {count: 0},
-    methods: {
-      handleClick() {
-        this.count++
+describe('main', () => {
+  it('works', () => {
+    const vm = new Vue({
+      render(html) {
+        return html`
+          <div>hello</div>
+        `
       }
-    },
-    render() {
-      return this.$html`
-        <div onClick=${this.handleClick}>
-          <span id="foo" class="hi" domPropsInnerHTML="hi"></span>
-        </div>
-      `
-    }
-  }).$mount()
-  vm.$el.dispatchEvent(new Event('click'))
-  vm._watcher.run()
-  expect(vm.count).toBe(1)
+    }).$mount()
+    assert(vm.$el.textContent === 'hello')
+  })
 
-  const hi = vm.$el.querySelector('.hi')
-  expect(hi.textContent).toBe('hi')
+  it('transform vue-specific attributes', () => {
+    const vm = new Vue({
+      data: { count: 0 },
+      methods: {
+        handleClick() {
+          this.count++
+        }
+      },
+      render(html) {
+        return html`
+          <div onClick=${this.handleClick}>
+            <span id="foo" class="hi" domPropsInnerHTML="hi"></span>
+          </div>
+        `
+      }
+    }).$mount()
+    vm.$el.dispatchEvent(new Event('click'))
+    vm._watcher.run()
+    assert(vm.count === 1)
 
-  const foo = vm.$el.querySelector('#foo')
-  expect(foo.textContent).toBe('hi')
+    const hi = vm.$el.querySelector('.hi')
+    assert(hi.textContent === 'hi')
+
+    const foo = vm.$el.querySelector('#foo')
+    assert(foo.textContent === 'hi')
+  })
 })

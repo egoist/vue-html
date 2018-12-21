@@ -1,47 +1,60 @@
-import hyperx from 'hyperx'
+import htm from 'htm'
+import mustUseDomProp from './mustUseDomProp'
 
-export default function (Vue) {
-  Vue.prototype.$html = function (...args) {
-    const createElement = hyperx((tag, attrs, children) => {
-      const newAttrs = {}
-      const defaults = ['style', 'className', 'key', 'ref', 'refInFor', 'slot']
-      for (const key of defaults) {
-        if (key === 'className') {
-          newAttrs.class = attrs.className
-        } else {
-          newAttrs[key] = attrs[key]
-        }
+export default Vue => {
+  Vue.mixin({
+    beforeCreate() {
+      const createElement = this.$createElement.bind(this)
+      const h = (tag, attrs, ...children) => {
+        return createElement(tag, attrs && getVNodeData(tag, attrs), children)
       }
+      this.$$createElement = createElement
+      this.$createElement = htm.bind(h)
+    }
+  })
+}
 
-      for (const key in attrs) {
-        if (key.substring(0, 2) === 'on') {
-          // onClick => on: {click}
-          newAttrs.on = newAttrs.on || {}
-          const newKey = lowerCaseFirstLetter(key.substring(2))
-          newAttrs.on[newKey] = attrs[key]
-        } else if (key.substring(0, 8) === 'nativeOn') {
-          // nativeOnClick => nativeOn: {click}
-          newAttrs.nativeOn = newAttrs.nativeOn || {}
-          const newKey = lowerCaseFirstLetter(key.substring(8))
-          newAttrs.nativeOn[newKey] = attrs[key]
-        } else if (key.substring(0, 8) === 'domProps') {
-          // domPropsInnerHTML => domProps: {innerHTML}
-          newAttrs.domProps = newAttrs.domProps || {}
-          const newKey = lowerCaseFirstLetter(key.substring(8))
-          newAttrs.domProps[newKey] = attrs[key]
-        } else if (defaults.indexOf(key) === -1) {
-          // all others attrs => {attrs: attr}
-          newAttrs.attrs = newAttrs.attrs || {}
-          newAttrs.attrs[key] = attrs[key]
-        }
-      }
+function getVNodeData(tag, attrs) {
+  const data = {}
 
-      return this.$createElement(tag, newAttrs, children)
-    })
+  const basics = ['slot', 'key', 'ref', 'refInFor', 'class', 'style']
 
-    const tree = createElement(...args)
-    return tree
+  for (const key of Object.keys(attrs)) {
+    if (key.substring(0, 2) === 'on') {
+      // OnClick => on: {click}
+      data.on = data.on || {}
+      const newKey = lowerCaseFirstLetter(key.substring(2))
+      data.on[newKey] = attrs[key]
+    } else if (key.substring(0, 8) === 'nativeOn') {
+      // NativeOnClick => nativeOn: {click}
+      data.nativeOn = data.nativeOn || {}
+      const newKey = lowerCaseFirstLetter(key.substring(8))
+      data.nativeOn[newKey] = attrs[key]
+    } else if (key.substring(0, 8) === 'domProps') {
+      // DomPropsInnerHTML => domProps: {innerHTML}
+      data.domProps = data.domProps || {}
+      const newKey = lowerCaseFirstLetter(key.substring(8))
+      data.domProps[newKey] = attrs[key]
+    } else if (key.substring(0, 2) === 'v-') {
+      data.directives = data.directives || []
+      const name = key.substring(2)
+      data.directives.push({
+        name,
+        value: attrs[key]
+      })
+    } else if (mustUseDomProp(tag, attrs.type, key)) {
+      data.domProps = data.domProps || {}
+      data.domProps[key] = attrs[key]
+    } else if (basics.indexOf(key) > -1) {
+      data[key] = attrs[key]
+    } else {
+      // All others props => {attrs: props}
+      data.attrs = data.attrs || {}
+      data.attrs[key] = attrs[key]
+    }
   }
+
+  return data
 }
 
 function lowerCaseFirstLetter(string) {

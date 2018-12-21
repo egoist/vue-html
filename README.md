@@ -2,7 +2,16 @@
 
 [![NPM version](https://img.shields.io/npm/v/vue-html.svg?style=flat-square)](https://npmjs.com/package/vue-html) [![NPM downloads](https://img.shields.io/npm/dm/vue-html.svg?style=flat-square)](https://npmjs.com/package/vue-html) [![Build Status](https://img.shields.io/circleci/project/egoist/vue-html/master.svg?style=flat-square)](https://circleci.com/gh/egoist/vue-html)
 
-> Use tagged template string in Vue.js
+> Use tagged template string in Vue.js render function
+
+## Why is this useful?
+
+If you want to use Vue without a bundler / transpiler, this library will (reasonably) make your app smaller:
+
+- Vue (runtime + template compiler): 32kB gzipped
+- Vue (runtime + vue-html): 23kB gzipped
+
+__What's the downside?__ No handy sugars like `v-model` support.
 
 ## Install
 
@@ -10,7 +19,10 @@
 $ npm install --save vue-html
 ```
 
-CDN version: https://unpkg.com/vue-html/dist/
+CDN versions: 
+
+- `UMD`: https://unpkg.com/vue-html/dist/html.js (exposed as `window.HTML`)
+- `ESM`: https://unpkg.com/vue-html/dist/html.es.js
 
 ## Usage
 
@@ -20,57 +32,48 @@ import HTML from 'vue-html'
 
 Vue.use(HTML)
 
+const Todos = {
+  props: ['todos'],
+  render(html) {
+    return html`
+    <ul>
+    ${this.todos.map((todo, index) => {
+      return html`<li key=${index}>${todo}</li>`
+    })}
+    </ul>
+    `
+  }
+}
+
 new Vue({
   el: '#app',
   data: {
-    count: 0
+    todos: [
+      'Conquer the world',
+      'Rewrite Peco'
+    ],
+    todo: ''
   },
   methods: {
-    handleClick() {
-      this.count++
+    add() {
+      this.todos.push(this.todo)
+      this.todo = ''
     }
   },
-  render() {
-    return this.$html`
-      <button onClick=${this.handleClick}>${this.count}</button>
+  render(html) {
+    return html`
+    <div>
+      <input value=${this.todo} onInput=${e => this.todo = e.target.value} />
+      <button type="button" onClick=${this.add}>Add</button>
+      <hr />
+      <${Todos} todos=${this.todos} />
+    </div>
     `
   }
 })
 ```
 
-The syntax is exactly the same as Vue JSX despiting that we're using [tagged template string](https://github.com/substack/hyperx) here.
-
-### Component
-
-You still have to use the original `h` function:
-
-```js
-new Vue({
-  el: '#app',
-  render(h) {
-    return this.$html`
-      ${h(Counter, {props: {start: 0}})}
-    `
-  }
-})
-
-const Counter = {}
-```
-
-### Mixed with `h`
-
-`this.$html` returns a vNode, it does the same thing that `h` function does, so you can use it with `h` function.
-
-```js
-new Vue({
-  el: '#app',
-  render(h) {
-    return h('div', null, [
-      this.$html`<span>foo</span>`
-    ])
-  }
-})
-```
+The usage is very similar to Vue JSX except for that the `html` function is powered by [HTM (Hyperscript Tagged Markup)](https://github.com/developit/htm).
 
 ## Contributing
 

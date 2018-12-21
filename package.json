@@ -1,53 +1,54 @@
 {
   "name": "vue-html",
   "version": "0.3.0",
-  "description": "Use tagged template string in Vue.js",
+  "description": "Use tagged template string in Vue.js render function",
   "license": "MIT",
   "repository": "egoist/vue-html",
   "author": {
     "name": "EGOIST",
     "email": "0x142857@gmail.com",
-    "url": "github.com/egoist"
+    "url": "http://github.com/egoist"
   },
   "scripts": {
-    "test": "jest && xo test/*.js src/*.js && npm run build",
-    "build": "bili --format umd --format cjs --compress",
-    "example": "vue build example.js"
+    "test": "npm run lint && npm run test:unit",
+    "test:unit": "poi puppet --test --plugin @poi/puppet --framework mocha",
+    "lint": "xo",
+    "build": "bili --format umd,cjs,es,es-min,umd-min --js buble --module-name HTML --inline --name html",
+    "example": "poi -so --config example/poi.config.js"
   },
   "files": [
     "dist"
   ],
   "xo": {
-    "space": 2,
-    "semicolon": false,
-    "esnext": true,
+    "extends": ["rem", "plugin:prettier/recommended"],
     "envs": [
-      "jest",
-      "browser"
-    ]
+      "browser",
+      "mocha"
+    ],
+    "rules": {
+      "unicorn/filename-case": "off",
+      "no-new": "off"
+    }
   },
-  "main": "dist/vue-html.common.js",
+  "main": "dist/html.js",
+  "module": "dist/html.es.js",
   "keywords": [
     "vue",
-    "hyperx"
+    "htm",
+    "html"
   ],
   "devDependencies": {
-    "babel-preset-es2015": "^6.22.0",
-    "bili": "^0.14.0",
-    "jest-cli": "^15.1.1",
-    "vue": "latest",
-    "xo": "^0.17.1"
-  },
-  "dependencies": {
-    "hyperx": "^2.0.5"
-  },
-  "babel": {
-    "env": {
-      "test": {
-        "presets": [
-          "es2015"
-        ]
-      }
-    }
+    "@poi/plugin-puppet": "^0.1.3",
+    "babel-preset-power-assert": "^3.0.0",
+    "bili": "^3.4.2",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-config-rem": "^4.0.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "htm": "^2.0.0",
+    "poi": "^12.2.4",
+    "power-assert": "^1.6.1",
+    "prettier": "^1.15.3",
+    "vue": "^2.5.21",
+    "xo": "^0.23.0"
   }
 }
