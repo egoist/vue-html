@@ -26,6 +26,8 @@ CDN versions:
 
 ## Usage
 
+[![Edit vue-html-example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/50qxwm44mx)
+
 ```js
 import Vue from 'vue'
 import HTML from 'vue-html'
