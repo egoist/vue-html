@@ -14,7 +14,8 @@
     "test:unit": "poi puppet --test --plugin @poi/puppet --framework mocha",
     "lint": "xo",
     "build": "bili --format umd,cjs,es,es-min,umd-min --js buble --module-name HTML --inline --name html",
-    "example": "poi -so --config example/poi.config.js"
+    "example": "poi -so --config example/poi.config.js",
+    "prepublishOnly": "npm run build"
   },
   "files": [
     "dist"
