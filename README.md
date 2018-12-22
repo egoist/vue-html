@@ -11,7 +11,7 @@ If you want to use Vue without a bundler / transpiler, this library will (reason
 - Vue (runtime + template compiler): 32kB gzipped
 - Vue (runtime + vue-html): 23kB gzipped
 
-__What's the downside?__ No handy sugars like `v-model` support.
+**What's the downside?** No handy sugars like `v-model` support.
 
 ## Install
 
@@ -19,7 +19,7 @@ __What's the downside?__ No handy sugars like `v-model` support.
 $ npm install --save vue-html
 ```
 
-CDN versions: 
+CDN versions:
 
 - `UMD`: https://unpkg.com/vue-html/dist/html.js (exposed as `window.HTML`)
 - `ESM`: https://unpkg.com/vue-html/dist/html.es.js
@@ -38,11 +38,15 @@ const Todos = {
   props: ['todos'],
   render(html) {
     return html`
-    <ul>
-    ${this.todos.map((todo, index) => {
-      return html`<li key=${index}>${todo}</li>`
-    })}
-    </ul>
+      <ul>
+        ${
+          this.todos.map((todo, index) => {
+            return html`
+              <li key=${index}>${todo}</li>
+            `
+          })
+        }
+      </ul>
     `
   }
 }
@@ -50,10 +54,7 @@ const Todos = {
 new Vue({
   el: '#app',
   data: {
-    todos: [
-      'Conquer the world',
-      'Rewrite Peco'
-    ],
+    todos: ['Conquer the world', 'Rewrite Peco'],
     todo: ''
   },
   methods: {
@@ -64,18 +65,51 @@ new Vue({
   },
   render(html) {
     return html`
-    <div>
-      <input value=${this.todo} onInput=${e => this.todo = e.target.value} />
-      <button type="button" onClick=${this.add}>Add</button>
-      <hr />
-      <${Todos} todos=${this.todos} />
-    </div>
+      <div>
+        <input
+          value=${this.todo}
+          onInput=${e => (this.todo = e.target.value)}
+        />
+        <button type="button" onClick=${this.add}>Add</button>
+        <hr />
+        <${Todos} todos=${this.todos} />
+      </div>
     `
   }
 })
 ```
 
 The usage is very similar to Vue JSX except that the `html` function is powered by [HTM (Hyperscript Tagged Markup)](https://github.com/developit/htm).
+
+### Using Components
+
+```js
+const App = {
+  render(html) {
+    return html`
+      <div>
+        <${Todos} />
+        <${Todos}> or with children <//>
+      </div>
+    `
+  }
+}
+```
+
+You can also use the traditional way of using local / global components:
+
+```js
+const App = {
+  render(html) {
+    return html`
+      <div><Todos /></div>
+    `
+  },
+  components: {
+    Todos
+  }
+}
+```
 
 ## Contributing
 
